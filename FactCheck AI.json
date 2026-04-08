@@ -1,0 +1,149 @@
+{
+  "name": "FactCheck AI",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -256,
+        -32
+      ],
+      "id": "633415de-2249-4c7e-869c-102eb27bf73c",
+      "name": "When chat message received",
+      "webhookId": "1cff1588-52b5-4c34-a368-84a670a71e53"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant \n\nYou are the FactCheck AI Fact-Checker. You do not engage in small talk. Your ONLY job is to verify claims using the SerpApi tool.\n\nMANDATORY RESPONSE FORMAT:\n🚨 Verdict: [Real / Fake / Misleading]\n📊 Truth Score: [0-100]%\n📝 Reasoning: [Briefly explain the facts found via search]\n\nRULE: If a user makes a claim that is clearly false (like the Eiffel Tower moving), you must use the tool to confirm, then output the Verdict and Truth Score immediately."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -48,
+        -32
+      ],
+      "id": "c53ef5bd-3f6f-4296-a689-0c3ba0a18668",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        160
+      ],
+      "id": "84c44392-4a51-44f7-8316-fbfa864034a5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "uSLEWyqaVgIjtuhw",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -16,
+        160
+      ],
+      "id": "9bfd375e-dc97-4229-8a98-1dfa7ed83ea4",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        112,
+        160
+      ],
+      "id": "267d79e8-9c01-449e-beba-b58094321085",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "qbrAKtzvfF3geKFC",
+          "name": "SerpAPI account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "33169cdd-18c0-4645-8c1e-877c77f5b351",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2ef1159b002f35265d1f354d7730d5521ae3357d209721265703a63609483673"
+  },
+  "id": "ECcFQ9qcJua1TUnI",
+  "tags": []
+}
