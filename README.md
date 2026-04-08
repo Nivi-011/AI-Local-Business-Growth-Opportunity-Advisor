@@ -1,1 +1,1 @@
-This is an AI-powered automation built in n8n. It takes customer reviews via Webhook, analyzes them using OpenAI, and sends a strategic growth report via Gmail
+This is an AI-powered automation built in n8n. It captures news headlines, cross-references them with real-time data using SerpAPI (Google Search) to prevent hallucinations, and uses OpenAI to generate a structured Truth Report—providing a clear Verdict, Truth Score, and detailed Reasoning.
